@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "title";
+}
+@model UserRegisterViewModel
+
+<form asp-action="Register" method="post">
+    <input asp-for="Email"/>
+    <input asp-for="Password"/>
+    <input asp-for="ConfirmPassword"/>
+    <button type="submit">Ekle</button>
+</form>
