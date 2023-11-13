@@ -26,7 +26,7 @@ namespace MutfakUygulamasiMVC.Controllers
         public async Task<IActionResult> Login(UserLoginViewModel userLoginViewModel)
         {
             AppUser appUser = await _userManager.FindByEmailAsync(userLoginViewModel.Email);
-            var signInAsync = _signInManager.PasswordSignInAsync(appUser, userLoginViewModel.Password, false, false);
+            var signInAsync = _signInManager.PasswordSignInAsync(appUser, userLoginViewModel.Password, userLoginViewModel.KeepMeLoggedIn, false);
             if (signInAsync.Result.Succeeded)
                 return RedirectToAction("Index", "Home");
             return View();
