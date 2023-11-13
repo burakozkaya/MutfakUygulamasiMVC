@@ -1,8 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+@model List<Envanter>
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Envanter Listesi</h1>
+    <div class="container">
+        <div class="row">
+            @{
+                foreach (var envanter in Model)
+                {
+                    <div class="col-4">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@envanter.Urun.ProductName</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">@envanter.Quantity</h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 </div>

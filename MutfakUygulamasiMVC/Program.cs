@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using MutfakUygulamasiMVC;
 using MutfakUygulamasiMVC.Data.Context;
 using MutfakUygulamasiMVC.Data.Entity;
 
@@ -8,12 +7,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var connectionString = builder.Configuration.GetConnectionString("ConString");
-builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<AppUser, AppRole>
-    ().AddEntityFrameworkStores<ApplicationDbContext>();
+    (x =>
+    {
+        x.Password.RequireDigit = false;
+        x.Password.RequireLowercase = false;
+        x.Password.RequireNonAlphanumeric = false;
+        x.Password.RequireUppercase = false;
+        x.Password.RequiredUniqueChars = 0;
+    }).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = new PathString("/User/Login");

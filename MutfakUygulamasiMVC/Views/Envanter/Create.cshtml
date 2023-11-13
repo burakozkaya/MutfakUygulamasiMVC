@@ -1,0 +1,11 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Security.Claims
+@model Envanter
+<form method="post">
+    <input asp-for="AppUserId" type="hidden" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+    <select asp-items="@ViewBag.SelectList" asp-for="UrunId"></select>
+    <input asp-for="Quantity"/>
+    <button type="submit">Envanter Ekle</button>
+</form>

@@ -4,8 +4,23 @@
 @model UserRegisterViewModel
 
 <form asp-action="Register" method="post">
-    <input asp-for="Email"/>
-    <input asp-for="Password"/>
-    <input asp-for="ConfirmPassword"/>
-    <button type="submit">Ekle</button>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Emailinizi girin : </label>
+        <input type="text" class="form-control" asp-for="Email">
+        <span asp-validation-for="Email" class="text text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput2" class="form-label">Şifrenizi girin : </label>
+        <input type="text" class="form-control" asp-for="Password">
+        <span asp-validation-for="Password" class="text text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Şifre Doğrulama : </label>
+        <input type="text" class="form-control" asp-for="ConfirmPassword">
+        <span asp-validation-for="ConfirmPassword" class="text text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
 </form>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

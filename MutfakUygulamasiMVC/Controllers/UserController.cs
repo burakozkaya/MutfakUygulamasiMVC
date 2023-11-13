@@ -5,7 +5,7 @@ using MutfakUygulamasiMVC.Models;
 
 namespace MutfakUygulamasiMVC.Controllers
 {
-    
+
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -27,7 +27,7 @@ namespace MutfakUygulamasiMVC.Controllers
         {
             AppUser appUser = await _userManager.FindByEmailAsync(userLoginViewModel.Email);
             var signInAsync = _signInManager.PasswordSignInAsync(appUser, userLoginViewModel.Password, false, false);
-            if(signInAsync.Result.Succeeded)
+            if (signInAsync.Result.Succeeded)
                 return RedirectToAction("Index", "Home");
             return View();
         }
@@ -42,9 +42,18 @@ namespace MutfakUygulamasiMVC.Controllers
             AppUser appUser = new AppUser()
             {
                 Email = registerViewModel.Email,
+                UserName = registerViewModel.Email
             };
-            await _userManager.CreateAsync(appUser, registerViewModel.Password);
-            return View();
+            var result = await _userManager.CreateAsync(appUser, registerViewModel.Password);
+            if (result.Succeeded)
+                RedirectToAction("Login", "User");
+            return View(registerViewModel);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

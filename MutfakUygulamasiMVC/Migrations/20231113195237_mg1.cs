@@ -53,6 +53,19 @@ namespace MutfakUygulamasiMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Urunler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Urunler", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -164,8 +177,9 @@ namespace MutfakUygulamasiMVC.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<int>(type: "int", nullable: false)
+                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    UrunId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,24 +190,10 @@ namespace MutfakUygulamasiMVC.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Urunler",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EnvanterId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Urunler", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Urunler_Envanterler_EnvanterId",
-                        column: x => x.EnvanterId,
-                        principalTable: "Envanterler",
+                        name: "FK_Envanterler_Urunler_UrunId",
+                        column: x => x.UrunId,
+                        principalTable: "Urunler",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -243,9 +243,10 @@ namespace MutfakUygulamasiMVC.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Urunler_EnvanterId",
-                table: "Urunler",
-                column: "EnvanterId");
+                name: "IX_Envanterler_UrunId",
+                table: "Envanterler",
+                column: "UrunId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -267,16 +268,16 @@ namespace MutfakUygulamasiMVC.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Urunler");
+                name: "Envanterler");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Envanterler");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Urunler");
         }
     }
 }
