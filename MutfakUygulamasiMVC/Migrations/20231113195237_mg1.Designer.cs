@@ -12,7 +12,7 @@ using MutfakUygulamasiMVC.Data.Context;
 namespace MutfakUygulamasiMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231113091124_mg1")]
+    [Migration("20231113195237_mg1")]
     partial class mg1
     {
         /// <inheritdoc />
@@ -240,9 +240,15 @@ namespace MutfakUygulamasiMVC.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("UrunId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("UrunId")
+                        .IsUnique();
 
                     b.ToTable("Envanterler");
                 });
@@ -255,16 +261,11 @@ namespace MutfakUygulamasiMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("EnvanterId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EnvanterId");
 
                     b.ToTable("Urunler");
                 });
@@ -322,24 +323,19 @@ namespace MutfakUygulamasiMVC.Migrations
 
             modelBuilder.Entity("MutfakUygulamasiMVC.Data.Entity.Envanter", b =>
                 {
-                    b.HasOne("MutfakUygulamasiMVC.Data.Entity.AppUser", "AppUser")
+                    b.HasOne("MutfakUygulamasiMVC.Data.Entity.AppUser", null)
                         .WithMany("Envanterler")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("MutfakUygulamasiMVC.Data.Entity.Urun", b =>
-                {
-                    b.HasOne("MutfakUygulamasiMVC.Data.Entity.Envanter", "Envanter")
-                        .WithMany("Urunler")
-                        .HasForeignKey("EnvanterId")
+                    b.HasOne("MutfakUygulamasiMVC.Data.Entity.Urun", "Urun")
+                        .WithOne("Envanter")
+                        .HasForeignKey("MutfakUygulamasiMVC.Data.Entity.Envanter", "UrunId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Envanter");
+                    b.Navigation("Urun");
                 });
 
             modelBuilder.Entity("MutfakUygulamasiMVC.Data.Entity.AppUser", b =>
@@ -347,9 +343,10 @@ namespace MutfakUygulamasiMVC.Migrations
                     b.Navigation("Envanterler");
                 });
 
-            modelBuilder.Entity("MutfakUygulamasiMVC.Data.Entity.Envanter", b =>
+            modelBuilder.Entity("MutfakUygulamasiMVC.Data.Entity.Urun", b =>
                 {
-                    b.Navigation("Urunler");
+                    b.Navigation("Envanter")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
